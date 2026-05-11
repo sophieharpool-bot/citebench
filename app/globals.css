@@ -120,6 +120,30 @@ button:disabled {
   word-break: break-all;
 }
 
+.page-type {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--border);
+}
+
+.type-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  background: #eaf2fb;
+  color: var(--accent);
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-right: 10px;
+}
+
+.type-desc {
+  color: var(--muted);
+  font-size: 13px;
+}
+
 .disqualified {
   padding: 16px 18px;
   background: #fffaf0;
@@ -185,6 +209,33 @@ button:disabled {
 .rule .marker.pass { color: var(--good); }
 .rule .marker.fail { color: var(--warn); }
 .rule .marker.fatal { color: var(--bad); }
+.rule .marker.na { color: #b8b8b3; }
+
+.rule.rule-na .rule-label,
+.rule.rule-na .rule-message {
+  color: #a5a5a0;
+}
+
+.na-tag {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 7px;
+  background: #efeee8;
+  color: #8b8b85;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.dimension-na .dimension-header {
+  opacity: 0.55;
+}
+
+.dimension-na .points {
+  color: var(--muted);
+}
 
 .rule .body { flex: 1; }
 

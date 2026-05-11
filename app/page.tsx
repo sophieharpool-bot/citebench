@@ -74,6 +74,10 @@ function Result({ result }: { result: AuditResult }) {
           <span className="out-of"> / 100</span>
         </div>
         <div className="url">{result.finalUrl}</div>
+        <div className="page-type">
+          <span className="type-badge">{result.pageTypeLabel}</span>
+          <span className="type-desc">{result.pageTypeDescription}</span>
+        </div>
       </div>
 
       {result.disqualified && (
@@ -83,22 +87,7 @@ function Result({ result }: { result: AuditResult }) {
       )}
 
       {result.dimensions.map((d) => (
-        <div key={d.dimension} className="dimension">
-          <div className="dimension-header">
-            <div>
-              <span className="label">{d.label}</span>
-              <span className="weight">{d.weight}% weight</span>
-            </div>
-            <div className="points">
-              {d.earnedPoints} / {d.maxPoints}
-            </div>
-          </div>
-          <div className="rules">
-            {d.results.map((r) => (
-              <RuleRow key={r.ruleId} rule={r} />
-            ))}
-          </div>
-        </div>
+        <Dimension key={d.dimension} d={d} />
       ))}
 
       {result.topFixes.length > 0 && (
@@ -118,24 +107,61 @@ function Result({ result }: { result: AuditResult }) {
   );
 }
 
-function RuleRow({ rule }: { rule: RuleResult }) {
-  const isFatal = rule.details?.fatal === true;
-  const markerClass = isFatal ? "fatal" : rule.passed ? "pass" : "fail";
-  const marker = isFatal ? "✕" : rule.passed ? "✓" : "·";
+function Dimension({ d }: { d: import("@/lib/types").DimensionScore }) {
+  const hasApplicable = d.results.some((r) => r.applicable !== false);
   return (
-    <div className="rule">
+    <div className={`dimension ${!hasApplicable ? "dimension-na" : ""}`}>
+      <div className="dimension-header">
+        <div>
+          <span className="label">{d.label}</span>
+          <span className="weight">{d.weight}% weight</span>
+        </div>
+        <div className="points">
+          {d.maxPoints === 0 ? "—" : `${d.earnedPoints} / ${d.maxPoints}`}
+        </div>
+      </div>
+      <div className="rules">
+        {d.results.map((r) => (
+          <RuleRow key={r.ruleId} rule={r} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function RuleRow({ rule }: { rule: RuleResult }) {
+  const applicable = rule.applicable !== false;
+  const isFatal = rule.details?.fatal === true;
+  let markerClass: string;
+  let marker: string;
+  if (!applicable) {
+    markerClass = "na";
+    marker = "—";
+  } else if (isFatal) {
+    markerClass = "fatal";
+    marker = "✕";
+  } else if (rule.passed) {
+    markerClass = "pass";
+    marker = "✓";
+  } else {
+    markerClass = "fail";
+    marker = "·";
+  }
+  return (
+    <div className={`rule ${!applicable ? "rule-na" : ""}`}>
       <span className={`marker ${markerClass}`}>{marker}</span>
       <div className="body">
         <div className="rule-label">
           {rule.label}
-          {rule.maxPoints > 0 && (
+          {applicable && rule.maxPoints > 0 && (
             <span className="rule-points">
               {rule.earnedPoints} / {rule.maxPoints}
             </span>
           )}
-          {rule.maxPoints === 0 && rule.earnedPoints < 0 && (
+          {applicable && rule.maxPoints === 0 && rule.earnedPoints < 0 && (
             <span className="rule-points">{rule.earnedPoints} pt</span>
           )}
+          {!applicable && <span className="na-tag">N/A for this page type</span>}
         </div>
         <div className="rule-message">{rule.message}</div>
       </div>
