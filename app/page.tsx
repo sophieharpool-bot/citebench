@@ -87,6 +87,11 @@ function Result({ result }: { result: AuditResult }) {
         </div>
       )}
 
+      <div className="score-meta">
+        Score breakdown below.{" "}
+        <a href="/methodology">How this is calculated →</a>
+      </div>
+
       {result.dimensions.map((d) => (
         <Dimension key={d.dimension} d={d} />
       ))}

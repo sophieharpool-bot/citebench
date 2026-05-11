@@ -153,6 +153,21 @@ button:disabled {
   margin-bottom: 24px;
 }
 
+.score-meta {
+  margin: 0 0 16px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.score-meta a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.score-meta a:hover {
+  text-decoration: underline;
+}
+
 .dimension {
   border: 1px solid var(--border);
   border-radius: 8px;
