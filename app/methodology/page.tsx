@@ -17,6 +17,27 @@ export default async function MethodologyPage() {
 
   return (
     <main className="prose-page">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline: "Citebench methodology v2",
+            description:
+              "How Citebench scores a URL: page-type-aware rubric, per-criterion rules, and the research basis for v2 weights.",
+            author: { "@type": "Organization", name: "Citebench" },
+            publisher: {
+              "@type": "Organization",
+              name: "Citebench",
+              logo: { "@type": "ImageObject", url: "https://citebench.com/opengraph-image" },
+            },
+            datePublished: "2026-05-11",
+            dateModified: "2026-05-11",
+            url: "https://citebench.com/methodology",
+          }),
+        }}
+      />
       <nav className="prose-nav">
         <Link href="/">← Back to audit</Link>
       </nav>

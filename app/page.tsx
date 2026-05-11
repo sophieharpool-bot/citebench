@@ -50,6 +50,22 @@ export default function Home() {
 
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            name: "Citebench",
+            applicationCategory: "BusinessApplication",
+            operatingSystem: "Web",
+            description:
+              "Audit any URL on how citable it is by AI answer engines (ChatGPT, Perplexity, Google AI Overviews, Gemini, Claude). Transparent scoring, real fixes.",
+            url: "https://citebench.com",
+            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+          }),
+        }}
+      />
       <header>
         <h1>Citebench</h1>
         <p>How citable is your page by AI answer engines? Paste a URL.</p>
