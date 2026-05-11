@@ -52,11 +52,20 @@ export function detectPageType(pageUrl: string, $: Doc): PageType {
   const h1Count = $("h1").length;
   const h2Count = $("h2").length;
   const paragraphCount = $("p").length;
-  if (h1Count >= 1 && h2Count >= 3 && paragraphCount >= 5) {
+  if (
+    h1Count >= 1 &&
+    h2Count >= 3 &&
+    paragraphCount >= 5 &&
+    hasEditorialSignals($)
+  ) {
     return "article";
   }
 
   if (hasSchemaType($, "Product", "Service", "Offer", "WebPage", "AboutPage", "ContactPage")) {
+    return "landing";
+  }
+
+  if (hasMarketingSignals($)) {
     return "landing";
   }
 
@@ -65,6 +74,43 @@ export function detectPageType(pageUrl: string, $: Doc): PageType {
   }
 
   return "other";
+}
+
+function hasEditorialSignals($: Doc): boolean {
+  const ogType = ($('meta[property="og:type"]').attr("content") ?? "").toLowerCase();
+  if (ogType === "article") return true;
+
+  if (
+    $('meta[property="article:published_time"]').length > 0 ||
+    $('meta[name="article:published_time"]').length > 0
+  ) {
+    return true;
+  }
+
+  let foundLongArticle = false;
+  $("article").each((_, el) => {
+    if (foundLongArticle) return;
+    const text = $(el).text().replace(/\s+/g, " ").trim();
+    const words = text.split(/\s+/).filter(Boolean).length;
+    if (words >= 300) foundLongArticle = true;
+  });
+  return foundLongArticle;
+}
+
+function hasMarketingSignals($: Doc): boolean {
+  const ogType = ($('meta[property="og:type"]').attr("content") ?? "").toLowerCase();
+  if (ogType === "website" || ogType === "product" || ogType === "company") {
+    return true;
+  }
+
+  const ctaPattern = /\b(get a demo|book a demo|request a demo|talk to sales|contact sales|start free|start for free|get started|sign up|sign up free|try free|try it free|free trial|see pricing|view pricing)\b/i;
+  let ctaMatches = 0;
+  $("a, button").each((_, el) => {
+    if (ctaMatches >= 2) return;
+    const text = $(el).text().replace(/\s+/g, " ").trim();
+    if (ctaPattern.test(text)) ctaMatches += 1;
+  });
+  return ctaMatches >= 2;
 }
 
 function looksLikeMachineVersion($: Doc): boolean {
