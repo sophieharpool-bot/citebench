@@ -154,6 +154,10 @@ button:disabled {
 }
 
 .score-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   margin: 0 0 16px;
   color: var(--muted);
   font-size: 14px;
@@ -166,6 +170,22 @@ button:disabled {
 
 .score-meta a:hover {
   text-decoration: underline;
+}
+
+.share-button {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  background: white;
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.share-button:hover {
+  border-color: var(--fg);
 }
 
 .dimension {

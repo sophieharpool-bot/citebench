@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import type { AuditResult, RuleResult } from "@/lib/types";
 
 export default function Home() {
@@ -9,8 +9,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<AuditResult | null>(null);
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  const runAudit = useCallback(async (targetUrl: string) => {
     setError(null);
     setResult(null);
     setLoading(true);
@@ -18,19 +17,35 @@ export default function Home() {
       const res = await fetch("/api/audit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url }),
+        body: JSON.stringify({ url: targetUrl }),
       });
       const data = await res.json();
       if (!res.ok) {
         setError(data.error || "Audit failed");
       } else {
         setResult(data as AuditResult);
+        const shareUrl = `${window.location.pathname}?url=${encodeURIComponent(targetUrl)}`;
+        window.history.replaceState(null, "", shareUrl);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Network error");
     } finally {
       setLoading(false);
     }
+  }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const urlParam = params.get("url");
+    if (urlParam) {
+      setUrl(urlParam);
+      runAudit(urlParam);
+    }
+  }, [runAudit]);
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    runAudit(url);
   }
 
   return (
@@ -88,8 +103,11 @@ function Result({ result }: { result: AuditResult }) {
       )}
 
       <div className="score-meta">
-        Score breakdown below.{" "}
-        <a href="/methodology">How this is calculated →</a>
+        <span>
+          Score breakdown below.{" "}
+          <a href="/methodology">How this is calculated →</a>
+        </span>
+        <ShareButton auditedUrl={result.finalUrl} />
       </div>
 
       {result.dimensions.map((d) => (
@@ -110,6 +128,27 @@ function Result({ result }: { result: AuditResult }) {
         </div>
       )}
     </>
+  );
+}
+
+function ShareButton({ auditedUrl }: { auditedUrl: string }) {
+  const [copied, setCopied] = useState(false);
+
+  async function handleClick() {
+    const shareUrl = `${window.location.origin}/?url=${encodeURIComponent(auditedUrl)}`;
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      window.prompt("Copy this URL:", shareUrl);
+    }
+  }
+
+  return (
+    <button type="button" className="share-button" onClick={handleClick}>
+      {copied ? "Copied!" : "Share audit"}
+    </button>
   );
 }
 
