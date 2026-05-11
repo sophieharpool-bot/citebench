@@ -295,3 +295,130 @@ footer a {
   color: var(--muted);
   text-decoration: underline;
 }
+
+/* Methodology / prose page */
+
+.prose-page {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 48px 24px 96px;
+}
+
+.prose-nav {
+  margin-bottom: 32px;
+  font-size: 14px;
+}
+
+.prose-nav a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.prose-nav a:hover {
+  color: var(--fg);
+}
+
+.prose {
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.prose h1 {
+  font-size: 32px;
+  letter-spacing: -0.02em;
+  margin: 0 0 16px;
+}
+
+.prose h2 {
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  margin: 40px 0 12px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+}
+
+.prose h3 {
+  font-size: 17px;
+  margin: 28px 0 8px;
+}
+
+.prose p {
+  margin: 0 0 14px;
+}
+
+.prose strong {
+  font-weight: 600;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 22px;
+  margin: 0 0 14px;
+}
+
+.prose li {
+  margin-bottom: 4px;
+}
+
+.prose a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.prose code {
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.prose pre {
+  background: var(--code-bg);
+  padding: 14px 16px;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 13px;
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+
+.prose pre code {
+  background: transparent;
+  padding: 0;
+  font-size: inherit;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 20px;
+  font-size: 14px;
+}
+
+.prose th,
+.prose td {
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.prose th {
+  background: #fbfaf6;
+  font-weight: 600;
+}
+
+.prose blockquote {
+  margin: 0 0 16px;
+  padding: 4px 16px;
+  border-left: 3px solid var(--border);
+  color: var(--muted);
+}
+
+.prose hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 32px 0;
+}

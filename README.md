@@ -25,10 +25,13 @@ Open http://localhost:3000.
 
 ```
 app/
-  layout.tsx         root layout
-  page.tsx           paste-URL form + results
-  globals.css        styles
-  api/audit/route.ts POST { url } → AuditResult
+  layout.tsx              root layout
+  page.tsx                paste-URL form + results
+  globals.css             styles
+  methodology/page.tsx    renders content/methodology-v2.md
+  api/audit/route.ts      POST { url } → AuditResult
+content/
+  methodology-v2.md       canonical methodology doc (deployed)
 lib/
   types.ts           shared types + dimension weights
   fetch.ts           HTTP fetch (15s timeout) + robots.txt
@@ -45,7 +48,7 @@ lib/
 
 ## Methodology
 
-See sibling `../methodology-v2.md`. Locked 2026-05-11. Revisit quarterly.
+Canonical doc: `content/methodology-v2.md` — rendered at `/methodology`. Locked 2026-05-11. Revisit quarterly.
 
 ## Status
 

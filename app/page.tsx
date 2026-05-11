@@ -59,7 +59,8 @@ export default function Home() {
       {result && <Result result={result} />}
 
       <footer>
-        Transparent scoring. No LLM at audit time. Methodology v2 — revisited quarterly.
+        Transparent scoring. No LLM at audit time.{" "}
+        <a href="/methodology">Methodology v2</a> — revisited quarterly.
       </footer>
     </main>
   );
