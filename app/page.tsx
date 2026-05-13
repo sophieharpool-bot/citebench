@@ -91,7 +91,7 @@ export default function Home() {
 
       <footer>
         Transparent scoring. No LLM at audit time.{" "}
-        <a href="/methodology">Methodology v2</a> — revisited quarterly.
+        <a href="/methodology">Methodology v2</a> · <a href="/blog">Blog</a>
       </footer>
     </main>
   );
