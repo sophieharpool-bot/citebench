@@ -98,6 +98,12 @@ export default function Home() {
 }
 
 function Result({ result }: { result: AuditResult }) {
+  const reportHref = `mailto:feedback@citebench.com?subject=${encodeURIComponent(
+    `Wrong classification: ${result.finalUrl}`,
+  )}&body=${encodeURIComponent(
+    `URL audited: ${result.finalUrl}\nClassified as: ${result.pageTypeLabel}\nExpected: \n\nDetails:\n`,
+  )}`;
+
   return (
     <>
       <div className="score-card">
@@ -109,6 +115,9 @@ function Result({ result }: { result: AuditResult }) {
         <div className="page-type">
           <span className="type-badge">{result.pageTypeLabel}</span>
           <span className="type-desc">{result.pageTypeDescription}</span>
+          <a className="report-classification" href={reportHref}>
+            Wrong classification?
+          </a>
         </div>
       </div>
 

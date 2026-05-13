@@ -144,6 +144,19 @@ button:disabled {
   font-size: 13px;
 }
 
+.report-classification {
+  display: inline-block;
+  margin-left: 10px;
+  font-size: 12px;
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.report-classification:hover {
+  color: var(--fg);
+}
+
 .disqualified {
   padding: 16px 18px;
   background: #fffaf0;
