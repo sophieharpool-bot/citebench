@@ -2,12 +2,14 @@
 
 import { useCallback, useEffect, useState } from "react";
 import type { AuditResult, RuleResult } from "@/lib/types";
+import { addToHistory, getHistory, relativeTime, type HistoryEntry } from "@/lib/history";
 
 export default function Home() {
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<AuditResult | null>(null);
+  const [history, setHistory] = useState<HistoryEntry[]>([]);
 
   const runAudit = useCallback(async (targetUrl: string) => {
     setError(null);
@@ -23,9 +25,18 @@ export default function Home() {
       if (!res.ok) {
         setError(data.error || "Audit failed");
       } else {
-        setResult(data as AuditResult);
+        const audit = data as AuditResult;
+        setResult(audit);
         const shareUrl = `${window.location.pathname}?url=${encodeURIComponent(targetUrl)}`;
         window.history.replaceState(null, "", shareUrl);
+        setHistory(
+          addToHistory({
+            url: audit.finalUrl,
+            score: audit.score,
+            pageTypeLabel: audit.pageTypeLabel,
+            timestamp: Date.now(),
+          }),
+        );
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Network error");
@@ -35,6 +46,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    setHistory(getHistory());
     const params = new URLSearchParams(window.location.search);
     const urlParam = params.get("url");
     if (urlParam) {
@@ -42,6 +54,11 @@ export default function Home() {
       runAudit(urlParam);
     }
   }, [runAudit]);
+
+  function selectFromHistory(entryUrl: string) {
+    setUrl(entryUrl);
+    runAudit(entryUrl);
+  }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -84,6 +101,10 @@ export default function Home() {
           {loading ? "Auditing…" : "Audit"}
         </button>
       </form>
+
+      {history.length > 0 && (
+        <History entries={history} onSelect={selectFromHistory} disabled={loading} />
+      )}
 
       {error && <div className="error">{error}</div>}
 
@@ -153,6 +174,42 @@ function Result({ result }: { result: AuditResult }) {
         </div>
       )}
     </>
+  );
+}
+
+function History({
+  entries,
+  onSelect,
+  disabled,
+}: {
+  entries: HistoryEntry[];
+  onSelect: (url: string) => void;
+  disabled: boolean;
+}) {
+  return (
+    <div className="history">
+      <div className="history-label">Recent audits</div>
+      <ul className="history-list">
+        {entries.map((e) => (
+          <li key={e.url} className="history-item">
+            <button
+              type="button"
+              className="history-button"
+              onClick={() => onSelect(e.url)}
+              disabled={disabled}
+            >
+              <span className="history-score">{e.score}</span>
+              <span className="history-body">
+                <span className="history-url">{e.url}</span>
+                <span className="history-meta">
+                  {e.pageTypeLabel} · {relativeTime(e.timestamp)}
+                </span>
+              </span>
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 

@@ -92,6 +92,93 @@ button:disabled {
   margin-bottom: 24px;
 }
 
+.history {
+  margin: 0 0 32px;
+}
+
+.history-label {
+  color: var(--muted);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+}
+
+.history-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: white;
+  overflow: hidden;
+}
+
+.history-item + .history-item {
+  border-top: 1px solid var(--border);
+}
+
+.history-button {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 10px 14px;
+  background: white;
+  color: var(--fg);
+  border: 0;
+  border-radius: 0;
+  font-size: 14px;
+  font-weight: 400;
+  text-align: left;
+  cursor: pointer;
+}
+
+.history-button:hover:not(:disabled) {
+  background: #fbfaf6;
+}
+
+.history-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.history-score {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 28px;
+  background: #f3f3ee;
+  color: var(--fg);
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.history-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.history-url {
+  color: var(--fg);
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.history-meta {
+  color: var(--muted);
+  font-size: 12px;
+}
+
 .score-card {
   padding: 28px 24px;
   border: 1px solid var(--border);
